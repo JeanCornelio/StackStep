@@ -8,6 +8,5 @@ export const MainLayaout = () => {
     <Outlet/>
     <h2>Footer</h2>
     </>
-    
   )
 }
