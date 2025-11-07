@@ -5,7 +5,7 @@ import { Filter, Rocket } from "lucide-react";
 export const GoalsPage = () => {
   return (
     <section>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between ">
         {/* title */}
       <div className="mb-5">
 
@@ -28,7 +28,7 @@ export const GoalsPage = () => {
       </div>
     
 
-      <div className="grid grid-cols-1 sm:grid-cols-2  2xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2  2xl:grid-cols-3 gap-4  w-full">
         <GoalCardComponent />
         <GoalCardComponent />
         <GoalCardComponent />

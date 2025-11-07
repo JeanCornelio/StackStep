@@ -1,6 +1,7 @@
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { EllipsisIcon, Flame } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const GoalCardComponent = () => {
   return (
@@ -8,7 +9,7 @@ export const GoalCardComponent = () => {
       <div className="flex  justify-between ">
         {/* Header*/}
         <div>
-          <h5 className="font-semibold text-sm ">Lern about nestJS</h5>
+          <h5 className="font-semibold text-sm ">Learn about nestJS</h5>
           <h6 className="text-gray-400 text-xs">
             Dominar los conceptos básicos y crear una API con NestJS
           </h6>
@@ -16,9 +17,12 @@ export const GoalCardComponent = () => {
 
         {/* Action */}
         <div>
-          <Button className="h-2 w-2" variant="ghost">
+          <Link to="/goalDetails" viewTransition>
+           <Button className="h-2 w-2" variant="ghost">
             <EllipsisIcon/>
           </Button>
+          </Link>
+         
         </div>
       </div>
 

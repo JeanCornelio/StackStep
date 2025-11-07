@@ -7,7 +7,8 @@ import { HomePage } from "../pages/home/HomePage";
 import { MainLayaout } from "../layout/MainLayaout";
 import { PublicLayout } from "@/layout/PublicLayout";
 
-import { GoalDetailPage, GoalsPage } from "@/pages/dashboard";
+import { GoalDetailPage, GoalsPage, DocumentationPage } from "@/pages/dashboard";
+
 
 export const routes = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ export const routes = createBrowserRouter([
     children: [
       { path: "/goals", element: <GoalsPage /> },
       { path: "/goalDetails", element: <GoalDetailPage /> },
+      { path: "/documentation", element: <DocumentationPage /> },
     ],
   },
 ]);
