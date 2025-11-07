@@ -17,7 +17,7 @@ export const HomePage = () => {
       <main>
         {/* Hero section */}
         <section className=" mt-16">
-          <div className="max-w-5xl  mx-auto text-center animate-fade-in ">
+          <div className="max-w-5xl  mx-auto text-center">
             <h1 className="text-6xl font-bold mb-6  tracking-tight space-y-3 ">
               Make your learning measurable with{" "}
               <span className="text-yellow-600 px-1">StackStep</span>
