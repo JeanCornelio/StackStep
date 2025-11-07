@@ -1,18 +1,18 @@
 import { Github } from "lucide-react";
 
 import { LogoComponent } from "../../components/ui";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const HomePage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <nav className="bg-mint py-4 px-10 flex items-center justify-between">
         <LogoComponent />
-        <NavLink to={"/login"}>
+        <Link to={"/login"}>
           <button className="bg-black text-white px-3 py-1 rounded-md ml-4 cursor-pointer">
             Get Started
           </button>
-        </NavLink>
+        </Link>
       </nav>
       <main>
         {/* Hero section */}
