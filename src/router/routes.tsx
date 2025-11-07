@@ -6,12 +6,20 @@ import { GoalDetailPage } from "../pages/dashboard/GoalDetailPage";
 import { NotFoundPage } from "../pages/not-found/NotFoundPage";
 import { HomePage } from "../pages/home/HomePage";
 import { MainLayaout } from "../layout/MainLayaout";
+import { PublicLayout } from "@/layout/PublicLayout";
 
 export const routes = createBrowserRouter([
+
+  {
+    element: <PublicLayout/>,
+    children: [
   { path: "/", element: <HomePage /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegistrationPage /> },
   { path: "*", element: <NotFoundPage /> },
+    ]
+  },
+
 
   {
     element: <MainLayaout />,
