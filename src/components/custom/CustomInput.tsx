@@ -1,6 +1,17 @@
-import clsx from "clsx";
-import { Controller, type Control, type FieldValues, type Path } from "react-hook-form";
+
+import {
+  type Control,
+  type FieldValues,
+  type Path,
+} from "react-hook-form";
 import { Input } from "../ui/input";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 interface Props<T extends FieldValues> {
   control: Control<T>;
@@ -18,37 +29,23 @@ export const CustomInput = <T extends FieldValues>({
   label,
 }: Props<T>) => {
   return (
-    <Controller
+    <FormField
       name={name}
       control={control}
-      render={({ field, fieldState }) =>  (
-          <div>
-            {label && (
-              <label
-                htmlFor={name}
-                className={clsx([
-                  fieldState.error ? "text-red-500" : "",
-                  "text-3xl",
-                  "text-xs",
-                ])}
-              >
-                {label}
-              </label>
-            )}
-
+      render={({ field }) => (
+        <FormItem>
+          {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
+          <FormControl>
             <Input
               {...field}
               placeholder={placeholder}
-              aria-invalid={fieldState.invalid}
               autoComplete="off"
               type={type}
             />
-            {fieldState.invalid && (
-              <span className="text-xs text-red-500 block">{fieldState.error?.message}</span>
-            )}
-          </div>
-        )
-      }
-    ></Controller>
+          </FormControl>
+          <FormMessage className="text-xs" />
+        </FormItem>
+      )}
+    ></FormField>
   );
 };
