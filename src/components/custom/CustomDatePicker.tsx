@@ -17,7 +17,7 @@ interface Props<T extends FieldValues> {
   control: Control<T>;
   placeholder: string;
   name: Path<T>;
-  type?: string;
+ 
   label?: string;
 }
 
@@ -25,7 +25,7 @@ export const CustomDatePicker = <T extends FieldValues>({
   control,
   placeholder,
   name,
-  type = "text",
+
   label,
 }: Props<T>) => {
   const [open, setOpen] = useState(false);
