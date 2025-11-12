@@ -1,4 +1,9 @@
-import { CustomDatePicker, CustomInput, CustomSelect, CustomTextarea } from "@/components/custom";
+import {
+  CustomDatePicker,
+  CustomInput,
+  CustomSelect,
+  CustomTextarea,
+} from "@/components/custom";
 
 import { Button } from "@/components/ui/button";
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
@@ -11,8 +16,11 @@ import * as z from "zod";
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  targetHour: z.string().min(1, "Target hour is required"),
+  targetHours: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+      message: "Hour must be a positive number",
+    }),
   category: z.string().min(1, "Category is required"),
+  dueDate: z.date({ message: "DueDate is required" }),
 });
 
 export const AddGoal = () => {
@@ -21,8 +29,9 @@ export const AddGoal = () => {
     defaultValues: {
       title: "",
       description: "",
-      targetHour: "",
+      targetHours: "",
       category: "",
+      dueDate: undefined,
     },
   });
 
@@ -34,13 +43,15 @@ export const AddGoal = () => {
     <>
       <Form {...form}>
         <CustomInput
-            label="Title"
-            placeholder="My goal title"
-            name="title"
-            control={form.control}
+          label="Title"
+          placeholder="My goal title"
+          name="title"
+          control={form.control}
         />
         <CustomDatePicker
-          label="Due Date"
+          label="Due date"
+          form={form}
+          placeholder="Select a due date"
           name="dueDate"
           control={form.control}
         />
@@ -64,15 +75,15 @@ export const AddGoal = () => {
           />
 
           <CustomInput
-            label="Hour target"
+            label="Total Hours"
             placeholder="example: 120"
-            name="targetHour"
+            name="targetHours"
             type="number"
             control={form.control}
           />
         </div>
       </Form>
-      <DialogFooter className="sm:justify-end">
+      <DialogFooter className="sm:justify-end mt-5">
         <DialogClose asChild>
           <Button type="button" variant="secondary">
             <X /> Close
