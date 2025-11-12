@@ -40,6 +40,7 @@ export const CustomInput = <T extends FieldValues>({
             <Input
               {...field}
               placeholder={placeholder}
+              className="bg-white"
               autoComplete="off"
               type={type}
             />
