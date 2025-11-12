@@ -6,10 +6,13 @@ import * as z from "zod";
 import { CustomInput } from "@/components/custom/CustomInput";
 import { SvgGitHub, SvgGoogle } from "@/components/shared/svg";
 import { Link } from "react-router-dom";
+import { Form } from "@/components/ui/form";
+
+
 
 const formSchema = z.object({
   email: z.email(),
-  password: z.string(),
+  password: z.string().min(1, "Password is required"),
 });
 
 export const LoginPage = () => {
@@ -27,44 +30,44 @@ export const LoginPage = () => {
 
   return (
     <article className="flex items-center justify-center h-screen">
-      <div className=" p-6 rounded-2xl w-90 h-90 border shadow  bg-white ">
+      <div className=" p-6 rounded-2xl w-90 h-fit border shadow  bg-white ">
         <div className="mb-5 flex justify-center w-full">
           <LogoComponent />
         </div>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
-        >
-          <CustomInput
-            name="email"
-            placeholder="Email"
-            control={form.control}
-            type="email"
-          />
-          <CustomInput
-            name="password"
-            placeholder="Password"
-            control={form.control}
-            type="password"
-          />
-
-          <Button className="w-full">Sign in</Button>
-          <div className="grid grid-col-1 md:grid-cols-2  gap-2 ">
-            <Button variant="outline">
-              <SvgGitHub /> GitHub
+        <Form {...form}>
+          <div className="flex flex-col gap-4">
+            <CustomInput
+              name="email"
+              placeholder="Email"
+              control={form.control}
+              type="email"
+            />
+            <CustomInput
+              name="password"
+              placeholder="Password"
+              control={form.control}
+              type="password"
+            />
+            <Button className="w-full" onClick={form.handleSubmit(onSubmit)}>
+              Sign in
             </Button>
-            <Button>
-              <SvgGoogle />
-              Google
-            </Button>
+            <div className="grid grid-col-1 md:grid-cols-2  gap-2 ">
+              <Button variant="outline">
+                <SvgGitHub /> GitHub
+              </Button>
+              <Button>
+                <SvgGoogle />
+                Google
+              </Button>
+            </div>
+            <div className="text-xs text-center mt-4">
+              <span>Don't have an account ?</span>
+              <Link className="font-bold ms-1" to="/register">
+                Sing up
+              </Link>
+            </div>
           </div>
-          <div className="text-xs text-center mt-4">
-            <span>Don't have an account ?</span>
-            <Link className="font-bold ms-1" to="/register">
-              Sing up
-            </Link>
-          </div>
-        </form>
+        </Form>
       </div>
     </article>
   );
