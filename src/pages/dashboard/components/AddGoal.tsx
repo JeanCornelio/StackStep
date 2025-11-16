@@ -16,7 +16,7 @@ import * as z from "zod";
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  targetHours: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+  totalHours: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
       message: "Hour must be a positive number",
     }),
   category: z.string().min(1, "Category is required"),
@@ -29,7 +29,7 @@ export const AddGoal = () => {
     defaultValues: {
       title: "",
       description: "",
-      targetHours: "",
+      totalHours: "",
       category: "",
       dueDate: undefined,
     },
@@ -77,7 +77,7 @@ export const AddGoal = () => {
           <CustomInput
             label="Total Hours"
             placeholder="example: 120"
-            name="targetHours"
+            name="totalHours"
             type="number"
             control={form.control}
           />
