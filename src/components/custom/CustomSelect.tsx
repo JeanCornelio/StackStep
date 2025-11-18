@@ -22,6 +22,8 @@ interface Props<T extends FieldValues> {
   name: Path<T>;
   label?: string;
   data: Array<{ label: string; value: string }>;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
 }
 
 export const CustomSelect = <T extends FieldValues>({
@@ -30,6 +32,8 @@ export const CustomSelect = <T extends FieldValues>({
   name,
   data = [],
   label,
+  onChange,
+  disabled = false,
 }: Props<T>) => {
   return (
     <FormField
@@ -39,7 +43,9 @@ export const CustomSelect = <T extends FieldValues>({
         <FormItem>
           {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
 
-          <Select value={field.value} onValueChange={field.onChange}>
+          <Select disabled={disabled} value={field.value} onValueChange={(value) => { field.onChange(value);
+            onChange?.(value);
+           }}>
             <FormControl>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder={placeholder} />
