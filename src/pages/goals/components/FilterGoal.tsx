@@ -7,18 +7,15 @@ import { Filter, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-const categories = [
-  "Health",
-  "Career",
-  "Development",
-  "Finance",
-  "Relationships",
-  "Hobbies",
-];
 
-const CATEGORY_INITIAL_STATE = "Category";
 
-export const FilterGoal = () => {
+const CATEGORY_INITIAL_STATE = {label: "Select Category", value: ""};
+
+interface FilterGoalProps {
+  categories?: Array<{ label: string; value: string }> ;
+}
+
+export const FilterGoal = ({ categories = [] }: FilterGoalProps) => {
   const [categorySelected, setCategorySelected] = useState(
     CATEGORY_INITIAL_STATE
   );
@@ -38,10 +35,13 @@ export const FilterGoal = () => {
 
   const searchWatch = form.watch("search");
 
+
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (searchWatch.trim() === "") return;
 
+      
       console.log("Search");
     }, 500);
 
@@ -49,6 +49,8 @@ export const FilterGoal = () => {
       clearTimeout(timeout);
     };
   }, [searchWatch]);
+
+  
 
   return (
     <>
@@ -71,7 +73,7 @@ export const FilterGoal = () => {
                       : ""
                   }
                 >
-                  {categorySelected}
+                  {categorySelected.label}
                 </span>
                 {CATEGORY_INITIAL_STATE !== categorySelected && (
                   <span
@@ -87,12 +89,12 @@ export const FilterGoal = () => {
               <div className="flex flex-col gap-2">
                 {categories.map((category) => (
                   <Button
-                    key={category}
+                    key={category.value}
                     variant="ghost"
                     className="justify-start"
                     onClick={() => setCategorySelected(category)}
                   >
-                    {category}
+                    {category.label}
                   </Button>
                 ))}
               </div>
