@@ -1,4 +1,3 @@
-
 import { X } from "lucide-react";
 import { Button } from "../ui/button";
 import {
@@ -18,7 +17,7 @@ interface CustomDialogProps {
   icon?: React.ComponentType;
   title?: string;
   description?: string;
-isOpen?: boolean;
+  isOpen?: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -28,19 +27,17 @@ export const CustomDialog = ({
   icon,
   title = "Title",
   description = "description",
-  isOpen= false,
+  isOpen = false,
   setIsOpen,
 }: CustomDialogProps) => {
-
-
   return (
-    <Dialog open={isOpen} >
+    <Dialog open={isOpen}>
       <DialogTrigger asChild>
         <Button onClick={() => setIsOpen(true)}>
           {icon && createElement(icon)} {buttonTitle}
         </Button>
       </DialogTrigger>
-      <DialogContent  showCloseButton={false}>
+      <DialogContent showCloseButton={false}>
         <DialogHeader className="gap-0">
           {title && <DialogTitle className="text-2xl">{title}</DialogTitle>}
           {description && <DialogDescription>{description}</DialogDescription>}

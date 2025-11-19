@@ -6,16 +6,19 @@ import { PopoverTrigger } from "@radix-ui/react-popover";
 import { Filter, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import type { SearchParams } from "../GoalsPage";
 
-
-
-const CATEGORY_INITIAL_STATE = {label: "Select Category", value: ""};
+const CATEGORY_INITIAL_STATE = { label: "Select Category", value: "" };
 
 interface FilterGoalProps {
-  categories?: Array<{ label: string; value: string }> ;
+  categories?: Array<{ label: string; value: string }>;
+  setSearchParams: React.Dispatch<React.SetStateAction<SearchParams>>;
 }
 
-export const FilterGoal = ({ categories = [] }: FilterGoalProps) => {
+export const FilterGoal = ({
+  categories = [],
+  setSearchParams,
+}: FilterGoalProps) => {
   const [categorySelected, setCategorySelected] = useState(
     CATEGORY_INITIAL_STATE
   );
@@ -31,26 +34,43 @@ export const FilterGoal = ({ categories = [] }: FilterGoalProps) => {
     Setfiltering(!filtering);
     form.reset();
     setCategorySelected(CATEGORY_INITIAL_STATE);
+    setSearchParams({term:null, categoryId: null})
   };
 
   const searchWatch = form.watch("search");
 
+  const handleSearchParam = (param: string, value: string | null) => {
+    setSearchParams((prev) => ({ ...prev, [param]: value }));
+  };
 
+  const onChangeCategory = (category: { value: string; label: string }) => {
+    handleSearchParam("categoryId", category.value);
+    setCategorySelected(category);
+  };
+
+  const resetCategory = () => {
+    handleSearchParam("categoryId", null);
+    setCategorySelected(CATEGORY_INITIAL_STATE);
+  };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (searchWatch.trim() === "") return;
+      if (searchWatch.trim() === "") {
+        handleSearchParam("term", null);
+        return;
+      }
 
-      
-      console.log("Search");
+      if (searchWatch.length <= 3) {
+        return;
+      }
+
+      handleSearchParam("term", searchWatch.trim());
     }, 500);
 
     return () => {
       clearTimeout(timeout);
     };
   }, [searchWatch]);
-
-  
 
   return (
     <>
@@ -78,7 +98,7 @@ export const FilterGoal = ({ categories = [] }: FilterGoalProps) => {
                 {CATEGORY_INITIAL_STATE !== categorySelected && (
                   <span
                     role="button"
-                    onClick={() => setCategorySelected(CATEGORY_INITIAL_STATE)}
+                    onClick={() => resetCategory()}
                   >
                     <X />
                   </span>
@@ -92,8 +112,7 @@ export const FilterGoal = ({ categories = [] }: FilterGoalProps) => {
                     key={category.value}
                     variant="ghost"
                     className="justify-start"
-                    onClick={() => setCategorySelected(category)}
-                  >
+                  onClick={() => onChangeCategory(category)}>
                     {category.label}
                   </Button>
                 ))}
