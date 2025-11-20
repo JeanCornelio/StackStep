@@ -75,12 +75,10 @@ export const GoalsPage = () => {
         </div>
         <div className="flex justify-end items-center gap-4">
           <div className="flex gap-2 ">
-            {goals?.data.length > 0 && (
             <FilterGoal
               categories={memoCategories}
               setSearchParams={setSearchParams}
-            />)
-}   
+            />
           </div>
           <CustomDialog
             icon={Rocket}
