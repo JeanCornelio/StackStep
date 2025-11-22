@@ -1,10 +1,13 @@
+import type {
+  FetchGoalsParams,
+  SetGoal,
+} from "@/pages/goals/components/types/goal.interface";
 import { get, post } from "@/utils/http-request";
 
-//TODO: Create the type of params
-export const fetchGoals = (params = {}) => {
+export const fetchGoals = (params: FetchGoalsParams) => {
   return get("/goals", params);
 };
-//TODO: Create the type of params
-export const postGoal = (data = {}) => {
-  return post("/goals", data);
+
+export const postGoal = (payload: SetGoal) => {
+  return post("/goals", payload);
 };

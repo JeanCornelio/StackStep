@@ -3,7 +3,7 @@ import { Target } from "lucide-react";
 interface logoProps {
   mode?: string;
 }
-//TODO:inpruve  the wey to use logo
+
 export const LogoComponent = ({ mode = "white" }: logoProps) => {
 
   const whiteMode = "bg-gray-300";

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SessionStatus, useAuthStore, useUserStore } from "./storage";
+import { useAuthStore, useUserStore } from "./storage";
 import { onGetProfile, refreshToken } from "@/services/auth";
 
 export const axiosInstance = axios.create({
@@ -43,11 +43,10 @@ axiosInstance.interceptors.response.use(
           avatarUrl,
         });
 
-        //TODO: Validar las veces que se intenta refrescar el token
         return axiosInstance(originalRequest);
       } catch (err) {
-        // Navigate to login page or show a message
-        //TODO: Clear Zustand store
+        localStorage.clear();
+        window.location.href = "/login";
         console.error("Refresh token failed:", err);
       }
     }

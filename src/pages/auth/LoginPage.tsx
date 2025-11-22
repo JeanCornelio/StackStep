@@ -46,7 +46,8 @@ export const LoginPage = () => {
           <LogoComponent />
         </div>
         <Form {...form}>
-          <div className="flex flex-col gap-4">
+        
+          <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(onSubmit)}>
             <CustomInput
               name="email"
               placeholder="Email"
@@ -61,7 +62,8 @@ export const LoginPage = () => {
             />
             <Button
               className="w-full flex -gap-1"
-              onClick={form.handleSubmit(onSubmit)}
+              type="submit"
+             
             >
               {isLoading && <SVGLoader />} Sign in
             </Button>
@@ -80,7 +82,7 @@ export const LoginPage = () => {
                 Sing up
               </Link>
             </div>
-          </div>
+          </form>
         </Form>
       </div>
     </article>

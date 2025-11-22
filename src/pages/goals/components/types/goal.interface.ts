@@ -21,3 +21,23 @@ export interface Category {
 export interface User {
   id: string;
 }
+
+export interface PaginationParams {
+  page: number;
+  size: number;
+}
+
+export interface SearchParams {
+  term?: string | null;
+  categoryId?: string | null;
+}
+
+export interface FetchGoalsParams extends PaginationParams, SearchParams {}
+
+export interface SetGoal {
+  title: string;
+  description: string;
+  totalHours: number;
+  categoryId: string;
+  dueDate: Date;
+}
