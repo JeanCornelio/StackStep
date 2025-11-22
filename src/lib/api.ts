@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useAuthStore, useUserStore } from "./storage";
+import { SessionStatus, useAuthStore, useUserStore } from "./storage";
 import { onGetProfile, refreshToken } from "@/services/auth";
 
 export const axiosInstance = axios.create({
@@ -45,9 +45,10 @@ axiosInstance.interceptors.response.use(
 
         return axiosInstance(originalRequest);
       } catch (err) {
-        localStorage.clear();
-        window.location.href = "/login";
-        console.error("Refresh token failed:", err);
+        if (useAuthStore.getState().status === SessionStatus.UNAUTHENTICATED) {
+          window.location.href = "/login";
+          console.error("Refresh token failed:", err);
+        }
       }
     }
 

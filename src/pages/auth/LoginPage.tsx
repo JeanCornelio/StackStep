@@ -16,7 +16,7 @@ const formSchema = z.object({
 });
 
 export const LoginPage = () => {
-  const { logIn, setLoading, authStatus } = useAuth();
+  const { logIn, authStatus } = useAuth();
 
   const isLoading = authStatus === SessionStatus.LOADING;
 
@@ -29,8 +29,7 @@ export const LoginPage = () => {
   });
 
   const onSubmit = async (formData: z.infer<typeof formSchema>) => {
-    setLoading();
-    console.log(authStatus);
+
     logIn(formData);
     //Change the state with is Loading
   };
@@ -46,8 +45,7 @@ export const LoginPage = () => {
           <LogoComponent />
         </div>
         <Form {...form}>
-        
-          <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="flex flex-col gap-4">
             <CustomInput
               name="email"
               placeholder="Email"
@@ -62,8 +60,7 @@ export const LoginPage = () => {
             />
             <Button
               className="w-full flex -gap-1"
-              type="submit"
-             
+              onClick={form.handleSubmit(onSubmit)}
             >
               {isLoading && <SVGLoader />} Sign in
             </Button>
@@ -82,7 +79,7 @@ export const LoginPage = () => {
                 Sing up
               </Link>
             </div>
-          </form>
+          </div>
         </Form>
       </div>
     </article>

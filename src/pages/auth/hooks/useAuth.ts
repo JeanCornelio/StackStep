@@ -2,6 +2,8 @@ import type { LoginCredentials } from "../interfaces/auth-service.interface";
 import { SessionStatus, useAuthStore, useUserStore } from "@/lib/storage";
 import { useNavigate } from "react-router-dom";
 import { onGetProfile, onLogIn, onLogOut } from "@/services/auth";
+import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
 export const useAuth = () => {
   const { setAccessToken, setStatus, status } = useAuthStore();
@@ -9,14 +11,26 @@ export const useAuth = () => {
   const navigate = useNavigate();
 
   const logIn = async (loginCredentials: LoginCredentials) => {
-    const data = await onLogIn(loginCredentials);
-    setAccessToken(data.access_token);
+    setLoading();
+    try {
+      const data = await onLogIn(loginCredentials);
+      setAccessToken(data.access_token);
 
-    if (data.access_token) {
-      navigate("/goals");
-      setStatus(SessionStatus.AUTHENTICATED);
-      localStorage.setItem("authStatus", SessionStatus.AUTHENTICATED);
-      getProfile();
+      if (data.access_token) {
+        navigate("/goals");
+        setStatus(SessionStatus.AUTHENTICATED);
+        localStorage.setItem("authStatus", SessionStatus.AUTHENTICATED);
+        getProfile();
+      }
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+
+      toast.warning(
+        typeof err === "string"
+          ? err
+          : err?.response?.data?.message || "Login failed. Please try again."
+      );
+      setUnauthenticated();
     }
   };
 
@@ -45,9 +59,14 @@ export const useAuth = () => {
     setStatus(SessionStatus.LOADING);
   };
 
+  const setUnauthenticated = () => {
+    setStatus(SessionStatus.UNAUTHENTICATED);
+  };
+
   return {
     logIn,
     setLoading,
+    setUnauthenticated,
     authStatus: status,
     logOut,
   };
