@@ -113,7 +113,7 @@ export const GoalsPage = () => {
           </div>
 
           {goals.data.length > 0 && (
-            <div className="mt-20">
+            <div className="mt-10">
               <CustomPaginator
                 totalItems={goals.total}
                 size={params.size}

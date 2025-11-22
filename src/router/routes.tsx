@@ -1,32 +1,38 @@
-import { createBrowserRouter } from "react-router-dom";
-
+import { Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage, RegistrationPage } from "../pages/auth";
-
-import { NotFoundPage } from "../pages/not-found/NotFoundPage";
 import { HomePage } from "../pages/home/HomePage";
 import { MainLayaout } from "../layout/MainLayaout";
 import { PublicLayout } from "@/layout/PublicLayout";
-
 import { GoalDetailPage, GoalsPage, DocumentationPage } from "@/pages/goals";
+import { SessionStatus } from "@/lib/storage";
+import { useAuth } from "@/pages/auth/hooks/useAuth";
+
+export const AppRoutes = () => {
+  const { authStatus } = useAuth();
 
 
-export const routes = createBrowserRouter([
-  {
-    element: <PublicLayout />,
-    children: [
-      { path: "/", element: <HomePage /> },
-      { path: "/login", element: <LoginPage /> },
-      { path: "/register", element: <RegistrationPage /> },
-      { path: "*", element: <NotFoundPage /> },
-    ],
-  },
 
-  {
-    element: <MainLayaout />,
-    children: [
-      { path: "/goals", element: <GoalsPage /> },
-      { path: "/goal-details/:id", element: <GoalDetailPage /> },
-      { path: "/documentation", element: <DocumentationPage /> },
-    ],
-  },
-]);
+  return (
+    <Routes>
+      {authStatus === SessionStatus.AUTHENTICATED ? (
+        <>
+          <Route  element={<MainLayaout />}>
+            <Route index path="/goals" element={<GoalsPage />} />
+            <Route path="/goal-details/:id" element={<GoalDetailPage />} />
+            <Route path="/documentation" element={<DocumentationPage />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/goals" replace />} />
+        </>
+      ) : (
+        <>
+          <Route  element={<PublicLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegistrationPage />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </>
+      )}
+    </Routes>
+  );
+};
