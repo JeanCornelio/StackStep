@@ -1,18 +1,18 @@
-import { SessionStatus } from "@/lib/storage";
-import { useAuth } from "@/pages/auth/hooks/useAuth";
+
+
+import { Button } from "@/components/ui/button";
 import type { JSX } from "react";
-import { Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 export const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-  const { authStatus } = useAuth();
-
-  const isAuthenticated = authStatus === SessionStatus.AUTHENTICATED;
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
-  
-
-  return children;
+  return   <article className="flex items-center justify-center h-screen relative">
+      <div className=" p-10 rounded-2xl  h-fit border shadow  bg-white ">
+         {children}
+          <Link to={"/"}>
+          <Button  className="mt-4">Back to home</Button>
+        </Link>
+         </div>
+         
+    </article>
 };

@@ -23,15 +23,13 @@ export const LoginPage = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "jcornelio@gmail.com",
-      password: "Jean1004",
+      email: "mofito2322@dolofan.com",
+      password: "Bot1234",
     },
   });
 
   const onSubmit = async (formData: z.infer<typeof formSchema>) => {
-
     logIn(formData);
-    //Change the state with is Loading
   };
 
 
