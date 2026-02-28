@@ -9,6 +9,8 @@ import { Form } from "@/components/ui/form";
 import { createAccount } from "@/services/auth";
 import { toast } from "sonner";
 import type { AxiosError } from "axios";
+import { SVGLoader } from "@/components/shared/svg";
+import { useState } from "react";
 
 const formSchema = z
   .object({
@@ -20,7 +22,7 @@ const formSchema = z
       .max(50, "Password is too long.")
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).*$/,
-        "Password must contain at least one uppercase letter."
+        "Password must contain at least one uppercase letter.",
       ),
     confirmPassword: z.string(),
   })
@@ -30,7 +32,8 @@ const formSchema = z
   });
 
 export const RegistrationPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,24 +46,23 @@ export const RegistrationPage = () => {
 
   const onSubmit = async (formData: z.infer<typeof formSchema>) => {
     try {
+      setIsLoading(true);
+      const { username, email, password } = formData;
 
-      const { confirmPassword, ...accountData } = formData;
+      const payload = { username, email, password };
 
-      console.log(accountData)
+      const { user } = await createAccount(payload);
 
-     
-      const { user } = await createAccount(accountData);
-
-      if(user){
+      if (user) {
         toast.success("The user account was successfully created.");
-        navigate("/login")
+        navigate("/login");
       }
-
-     
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
-      console.log(err)
+      
       toast.error(err.response?.data.message || "");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -96,13 +98,17 @@ export const RegistrationPage = () => {
               type="password"
             />
 
-            <Button className="w-full" onClick={form.handleSubmit(onSubmit)}>
-              Sign up
+            <Button
+              className="w-full flex gap-0"
+              disabled={isLoading}
+              onClick={form.handleSubmit(onSubmit)}
+            >
+              {isLoading && <SVGLoader></SVGLoader>}Sign up
             </Button>
 
             <div className="text-xs text-center mt-4">
               <span>Already have an account ?</span>
-              <Link className="font-bold ms-1" to="/login">
+              <Link className="font-bold ms-1" to={isLoading ? "#" : "/login"}>
                 Log in
               </Link>
             </div>
