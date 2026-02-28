@@ -55,8 +55,6 @@ export const AddGoal = ({
     },
   });
 
-
-
   const reset = () => {
     refreshGoals();
     form.reset();
@@ -92,7 +90,7 @@ export const AddGoal = ({
         />
         <CustomDatePicker
           label="Due date"
-          form={form}
+   
           placeholder="Select a due date"
           name="dueDate"
           control={form.control}

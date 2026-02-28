@@ -4,13 +4,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { CustomInput } from "@/components/custom/CustomInput";
-import { SvgGitHub, SvgGoogle } from "@/components/shared/svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form } from "@/components/ui/form";
+import { createAccount } from "@/services/auth";
+import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
 const formSchema = z
   .object({
-    userName: z.string().min(3, "Username must be at least 3 characters."),
+    username: z.string().min(3, "Username must be at least 3 characters."),
     email: z.email(),
     password: z
       .string()
@@ -28,18 +30,38 @@ const formSchema = z
   });
 
 export const RegistrationPage = () => {
+  const navigate = useNavigate()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userName: "",
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+  const onSubmit = async (formData: z.infer<typeof formSchema>) => {
+    try {
+
+      const { confirmPassword, ...accountData } = formData;
+
+      console.log(accountData)
+
+     
+      const { user } = await createAccount(accountData);
+
+      if(user){
+        toast.success("The user account was successfully created.");
+        navigate("/login")
+      }
+
+     
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      console.log(err)
+      toast.error(err.response?.data.message || "");
+    }
   };
 
   return (
@@ -51,7 +73,7 @@ export const RegistrationPage = () => {
         <Form {...form}>
           <div className="flex flex-col gap-4">
             <CustomInput
-              name="userName"
+              name="username"
               placeholder="Username"
               control={form.control}
             />
@@ -77,15 +99,7 @@ export const RegistrationPage = () => {
             <Button className="w-full" onClick={form.handleSubmit(onSubmit)}>
               Sign up
             </Button>
-            <div className="grid grid-col-1 md:grid-cols-2  gap-2 ">
-              <Button variant="outline">
-                <SvgGitHub /> GitHub
-              </Button>
-              <Button>
-                <SvgGoogle />
-                Google
-              </Button>
-            </div>
+
             <div className="text-xs text-center mt-4">
               <span>Already have an account ?</span>
               <Link className="font-bold ms-1" to="/login">

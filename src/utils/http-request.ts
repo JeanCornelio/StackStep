@@ -9,5 +9,6 @@ export const get = async (url: string, params = {}) => {
 export const post = async (url: string, data = {}) => {
   const res = await axiosInstance.post(url, data);
 
+  console.log(res);
   return res.data;
 };

@@ -13,18 +13,11 @@ import { fetchGoals } from "@/services/goals";
 
 import { useMemo, useState } from "react";
 import { CustomPaginator } from "@/components/custom/CustomPaginator";
-import type { Goal } from "./components/types/goal.interface";
+import type { Goal, PaginationParams, SearchParams  } from "./components/types/goal.interface";
 import { fetchCategoriesDropdown } from "@/services/category";
 
-export interface PaginationParams {
-  page: number;
-  size: number;
-}
 
-export interface SearchParams {
-  term?: string | null;
-  categoryId?: string | null;
-}
+
 
 const initalParams = {
   page: 1,
@@ -113,7 +106,7 @@ export const GoalsPage = () => {
           </div>
 
           {goals.data.length > 0 && (
-            <div className="mt-20">
+            <div className="">
               <CustomPaginator
                 totalItems={goals.total}
                 size={params.size}
