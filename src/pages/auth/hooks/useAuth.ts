@@ -1,7 +1,12 @@
 import type { LoginCredentials } from "../interfaces/auth-service.interface";
 import { SessionStatus, useAuthStore, useUserStore } from "@/lib/storage";
 import { useNavigate } from "react-router-dom";
-import { onGetProfile, onLogIn, onLogOut } from "@/services/auth";
+import {
+  onAuthWithGithub,
+  onGetProfile,
+  onLogIn,
+  onLogOut,
+} from "@/services/auth";
 import { toast } from "sonner";
 import type { AxiosError } from "axios";
 
@@ -11,27 +16,8 @@ export const useAuth = () => {
   const navigate = useNavigate();
 
   const logIn = async (loginCredentials: LoginCredentials) => {
-    setLoading();
-    try {
-      const data = await onLogIn(loginCredentials);
-      setAccessToken(data.access_token);
-
-      if (data.access_token) {
-        navigate("/goals");
-        setStatus(SessionStatus.AUTHENTICATED);
-        localStorage.setItem("authStatus", SessionStatus.AUTHENTICATED);
-        getProfile();
-      }
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-
-      toast.warning(
-        typeof err === "string"
-          ? err
-          : err?.response?.data?.message || "Login failed. Please try again."
-      );
-      setUnauthenticated();
-    }
+    const { access_token } = await onLogIn(loginCredentials);
+    setAuthenticated(access_token);
   };
 
   const logOut = async () => {
@@ -63,11 +49,38 @@ export const useAuth = () => {
     setStatus(SessionStatus.UNAUTHENTICATED);
   };
 
+  const setAuthenticated = (accessToken: string) => {
+    setLoading();
+    try {
+      setAccessToken(accessToken);
+
+      if (accessToken) {
+        navigate("/goals");
+        setStatus(SessionStatus.AUTHENTICATED);
+        localStorage.setItem("authStatus", SessionStatus.AUTHENTICATED);
+        getProfile();
+      }
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+
+      toast.warning(
+        typeof err === "string"
+          ? err
+          : err?.response?.data?.message || "Login failed. Please try again.",
+      );
+      setUnauthenticated();
+    }
+  };
+
+  const loginWithGithub = () => onAuthWithGithub();
+
   return {
     logIn,
     setLoading,
-    setUnauthenticated,
     authStatus: status,
     logOut,
+    setAuthenticated,
+    setUnauthenticated,
+    loginWithGithub,
   };
 };

@@ -8,6 +8,8 @@ import { SessionStatus } from "@/lib/storage";
 import { useAuth } from "@/pages/auth/hooks/useAuth";
 import { PrivateRoute } from "./components/PrivateRouter";
 import { VerifyAccount } from "@/pages/auth/VerifyAccount";
+import { TokenValidator } from "@/pages/auth/TokenValidator";
+
 
 export const AppRoutes = () => {
   const { authStatus } = useAuth();
@@ -39,6 +41,10 @@ export const AppRoutes = () => {
             />
           </Route>
           <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route
+            path="/login/callback/:token"
+            element={<TokenValidator/>}
+          />
         </>
       )}
     </Routes>

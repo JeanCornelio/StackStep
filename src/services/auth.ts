@@ -37,3 +37,7 @@ export const onActiveAccount = async (token: string | undefined) => {
 
   return data;
 };
+
+export const onAuthWithGithub = () => {
+  window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/github`;
+};
