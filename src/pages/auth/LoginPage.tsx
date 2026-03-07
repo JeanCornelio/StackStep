@@ -10,13 +10,16 @@ import { Form } from "@/components/ui/form";
 import { useAuth } from "./hooks/useAuth";
 import { SessionStatus } from "@/lib/storage";
 
+
+
 const formSchema = z.object({
   email: z.email(),
   password: z.string().min(1, "Password is required"),
 });
 
 export const LoginPage = () => {
-  const { logIn, authStatus } = useAuth();
+  const { logIn, authStatus, loginWithGithub } = useAuth();
+
 
   const isLoading = authStatus === SessionStatus.LOADING;
 
@@ -63,7 +66,7 @@ export const LoginPage = () => {
               {isLoading && <SVGLoader />} Sign in
             </Button>
             <div className="grid grid-col-1 md:grid-cols-2  gap-2 ">
-              <Button variant="outline">
+              <Button variant="outline" onClick={()=> loginWithGithub()}>
                 <SvgGitHub /> GitHub
               </Button>
               <Button>

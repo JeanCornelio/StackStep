@@ -1,7 +1,7 @@
 import { axiosInstance } from "@/lib/api";
 
-export const get = async (url: string, params = {}) => {
-  const res = await axiosInstance.get(url, { params });
+export const get = async (url: string, params = {}, headers = {}) => {
+  const res = await axiosInstance.get(url, { params, headers });
 
   return res.data;
 };
@@ -9,6 +9,5 @@ export const get = async (url: string, params = {}) => {
 export const post = async (url: string, data = {}) => {
   const res = await axiosInstance.post(url, data);
 
-  console.log(res);
   return res.data;
 };

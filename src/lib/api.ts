@@ -25,10 +25,13 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     const setUserProfile = useUserStore.getState().setUser;
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         const { data } = await refreshToken();
+
+        console.log(data);
 
         // Guarda token en Zustand
         useAuthStore.getState().setAccessToken(data.access_token);
